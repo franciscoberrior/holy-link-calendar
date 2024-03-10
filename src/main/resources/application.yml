@@ -1,0 +1,39 @@
+info:
+  app:
+    name: calendar
+    description: holy-link calendar application
+    version: 1.0.0
+    encoding: UTF-8
+    java:
+      version: 1.17.0
+spring:
+  profile: ${ENV}
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.actuate.autoconfigure.metrics.web.servlet.WebMvcMetricsAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  cloud:
+    config:
+      import-check:
+        enabled: false
+  r2dbc:
+    url: r2dbc:postgresql://${PG_DB_HOST}:${PG_DB_PORT}/${PG_DB_NAME}
+    username: ${PG_DB_USERNAME}
+    password: ${PG_DB_PASSWORD}
+  messages:
+    basename: i18n/messages, i18n/messages_es
+  flyway:
+    url: jdbc:postgresql://${PG_DB_HOST}:${PG_DB_PORT}/${PG_DB_NAME}
+    locations: classpath:db/migration
+    enabled: true
+multitenant:
+  schemas: ${MULTITENANT_SCHEMAS}
+  package: com.church.holylink
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: swagger/swagger-ui.html
